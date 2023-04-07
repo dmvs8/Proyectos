@@ -1,0 +1,66 @@
+﻿@model Final2MVCCore.Models.IndexVM
+
+<b>Vergara Diego</b>
+
+<div style="background-color:aqua">
+    @using(Html.BeginForm("Agregar", "Home"))
+    {
+        @Html.LabelFor(m => m.Nombre)  <span>:</span>
+        @Html.EditorFor(m => m.Nombre)
+        <br>
+
+        @Html.LabelFor(m => m.PorcentajeDeVotos)  <span>:</span>
+        @Html.EditorFor(m => m.PorcentajeDeVotos)
+
+        <input name="agregar" type="submit" value="Agregar" />
+    }
+
+</div>
+
+@if (Model.Candidatos.Count != 0)
+{
+    <div style="background-color: #f5f117">
+         @Html.ActionLink("Eliminar candidatos con votos", "EliminarConVotos", "Home")
+         <br></br>
+
+        <table border="1">
+             @foreach (var candidato in Model.Candidatos)
+             {
+               <tr style="background-color: lightblue">
+                    <td>
+                        <span>Id:</span>
+                        @candidato.Id
+                        @Html.ActionLink("Pasar al final", "PasarAlFinal", "Home",new {id= @candidato.Id})
+                        <br />
+
+                        <span>Nombre:</span>
+                        @candidato.Nombre                
+                        <br />
+                        <span>PorcentajeDeVotos:</span>
+                        @candidato.PorcentajeDeVotos                                
+                        <br />
+
+                        @using (@Html.BeginForm("Index", "Home"))
+                        {
+                            @Html.Hidden("id", candidato.Id)
+                            <input name="cmdEliminar" type="submit" value="Eliminar" />
+                            <input name="cmdClonar" type="submit" value="Clonar" />
+                            <input name="cmdPorcentajeMenosUno" type="submit" value="Porcentaje--" />
+                            <input name="cmdMayMin" type="submit" value="Ver nombres similares" />
+                        }                  
+                    </td>            
+               </tr>               
+             }
+        </table>
+
+        Total de candidatos: @Model.Candidatos.Count
+    </div>
+    
+    @Html.ValidationSummary()
+}  
+else
+{
+    <div style="color: red">
+        No existen candidatos
+    </div>
+}
